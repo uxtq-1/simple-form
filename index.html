@@ -16,8 +16,7 @@
     <div class="modal-content">
       <!-- Close Button -->
       <button class="close-modal" aria-label="Close">&times;</button>
-      
-      <!-- Modal Title -->
+            <!-- Modal Title -->
       <h3 class="modal-title">Join Us</h3>
       
       <!-- Modal Form -->
@@ -34,6 +33,10 @@
           <label for="contact">Contact Number</label>
           <input id="contact" type="tel" placeholder="Enter your contact number" required>
         </div>
+        <div class="form-group full-width">
+          <label for="comment">Comment</label>
+          <textarea id="comment" rows="1" placeholder="Tell us about yourself" required></textarea>
+        </div>
         <div class="form-group">
           <label for="date">Date</label>
           <input id="date" type="date" required>
@@ -42,17 +45,12 @@
           <label for="time">Time</label>
           <input id="time" type="time" required>
         </div>
-        <div class="form-group full-width">
-          <label for="comment">Comment</label>
-          <textarea id="comment" rows="4" placeholder="Tell us about yourself" required></textarea>
-        </div>
         <div class="form-group full-width submit-group">
           <button type="submit" class="submit-button">Submit</button>
         </div>
       </form>
     </div>
   </div>
-
   <!-- Optional script to close the modal (for demonstration) -->
   <script>
     document.querySelector('.close-modal').addEventListener('click', () => {
