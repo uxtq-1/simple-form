@@ -164,7 +164,7 @@ body {
   
   /* Full width for textarea and submit */
   .modal-form .form-group.full-width {
-    flex: 1 1 100%;
+    flex: 1 1 50%;
   }
   
   /* Center the submit button */
