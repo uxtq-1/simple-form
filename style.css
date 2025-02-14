@@ -1,0 +1,175 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Basic Body Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+/* Modal Overlay: covers the full viewport */
+.modal-overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  inset: 0; /* top, right, bottom, left: 0 */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 3000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+/* Modal Content Container */
+.modal-content {
+  background-color: #fff;
+  color: #333;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Close Button: always at the top-right */
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #9b87f5;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 10;
+  transition: background-color 0.3s;
+}
+
+.close-modal:hover {
+  background-color: #7e69ab;
+}
+
+/* Modal Title */
+.modal-title {
+  margin: 60px 20px 10px; /* extra top margin to clear the close button */
+  text-align: center;
+  font-size: 1.8rem;
+}
+
+/* Modal Form */
+.modal-form {
+  padding: 0 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+/* Form Group - basic styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Full-width elements */
+.full-width {
+  width: 100%;
+}
+
+/* Submit Button Group */
+.submit-group {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.submit-button {
+  background-color: #9b87f5;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-button:hover {
+  background-color: #7e69ab;
+}
+
+/* SMALL SCREENS: vertical layout is default */
+/* Ensure the modal-form scrolls if content overflows */
+.modal-form {
+  max-height: calc(90vh - 150px);
+  overflow-y: auto;
+}
+
+/* BIG SCREENS: horizontal two-column layout for form fields */
+@media (min-width: 1024px) {
+  /* Rearrange the modal content into two sections:
+     left for fields, right for the comment & submit area */
+  .modal-content {
+    flex-direction: row;
+    padding: 2rem;
+  }
+  
+  .modal-title {
+    margin: 0;
+    padding-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .modal-form {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  
+  /* Two-column layout for most fields */
+  .modal-form .form-group {
+    flex: 1 1 calc(50% - 1.5rem);
+  }
+  
+  /* Full width for textarea and submit */
+  .modal-form .form-group.full-width {
+    flex: 1 1 100%;
+  }
+  
+  /* Center the submit button */
+  .submit-group {
+    justify-content: center;
+    width: 100%;
+  }
+}
