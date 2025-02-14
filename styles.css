@@ -47,7 +47,7 @@ body {
 .close-modal {
   position: absolute;
   top: 20px;
-  right: 300px; /* Correctly positions it at the top-right */
+  right: 275px; /* Correctly positions it at the top-right */
   background-color: #9b87f5;
   color: #fff;
   border: none;
