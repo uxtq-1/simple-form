@@ -1,47 +1,65 @@
 body {
-  font-family: sans-serif;
-  background-color: #f9f9f9;
-  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f3f3f3;
+  margin: 0;
+  padding: 0;
 }
 
 .form-container {
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 700px;
-  margin: auto;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 500px;
+  background: #fff;
+  margin: 60px auto;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
 }
 
-form {
-  display: flex;
-  flex-direction: column;
+.progress-bar {
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+.progress {
+  background: #6c63ff;
+  width: 0%;
+  transition: width 0.4s ease;
+  height: 100%;
 }
 
 .form-step {
   display: none;
   flex-direction: column;
-  gap: 10px;
+  animation: fadeIn 0.3s ease;
 }
 
 .form-step.active {
   display: flex;
 }
 
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(10px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
 label {
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 12px;
   font-weight: 600;
+  display: block;
 }
 
 input, select, textarea {
-  padding: 8px;
-  margin-top: 4px;
+  width: 100%;
+  padding: 10px;
   font-size: 1rem;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-.step-controls {
-  margin-top: 20px;
+.navigation {
   display: flex;
   justify-content: space-between;
 }
@@ -49,5 +67,17 @@ input, select, textarea {
 button {
   padding: 10px 20px;
   font-size: 1rem;
+  background: #6c63ff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
+}
+
+button:hover {
+  background: #5850d9;
+}
+
+.hidden {
+  display: none;
 }
