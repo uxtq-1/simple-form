@@ -92,7 +92,7 @@ async function submitForm() {
   const data = Object.fromEntries(formData.entries());
   const encodedData = btoa(JSON.stringify(data));
 
-  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbz3n9BkuBmofRa4uZELv2MbWGY0aUXqXecT8C-7H7rAnf3WGd_oYj10UBwo19n02K2aiQ/exec";
+  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbzpCPCPwM_TnM3uAegoALnzhwsG82IVyK3Xvm-udSkpVqg_hXwpOPim8ohs70H8wGQ3/exec";
 
   try {
     const res = await fetch(GOOGLE_WEBHOOK, {
