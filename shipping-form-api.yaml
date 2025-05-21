@@ -1,0 +1,32 @@
+openapi: 3.1.0
+info:
+  title: Shipping Form API
+  description: Receives encrypted shipping form data and stores it in a Google Sheet via Google Apps Script.
+  version: 1.0.0
+servers:
+  - url: https://script.google.com/macros/s/XXXXX/exec
+    description: Google Apps Script Webhook Endpoint (replace with your actual URL)
+paths:
+  /:
+    post:
+      operationId: submitShippingForm
+      summary: Submit encrypted shipping form
+      description: Accepts a base64-encoded JSON string representing the shipping form submission.
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              description: Base64-encoded JSON payload containing the shipping form data.
+      responses:
+        '200':
+          description: Successfully received and stored the form data in Google Sheets.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '400':
+          description: Bad request. Invalid or missing payload.
+        '500':
+          description: Server error while processing form submission.
