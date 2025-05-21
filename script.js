@@ -112,10 +112,10 @@ function scanBarcode() {
 
 // Submit function
 async function submitForm() {
-  const formData = Object.fromEntries(new FormData(document.getElementById("shippingForm")).entries());
+  const formData = Object.fromEntries(new FormData(document.getElementById("ShippingFormResponses")).entries());
   const encrypted = btoa(JSON.stringify(formData));
 
-  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec"; // Replace this
+  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbx3KZurx8EIYSaZuTsQOQTwnhvVl6ITJeNzc2cXgCj4/dev"; // Replace this
 
   try {
     const res = await fetch(GOOGLE_WEBHOOK, {
