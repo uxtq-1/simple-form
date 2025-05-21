@@ -119,7 +119,7 @@ async function submitForm() {
   const formData = Object.fromEntries(new FormData(document.getElementById("shippingForm")).entries());
   const encryptedData = btoa(JSON.stringify(formData));
 
-  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbwaVxT8ZQtar1H-Ob-QEeBSsSfUQGPUG3fbrH-5K7oVNzawHGOre-XNc9ihyezCbClegg/exec"; // Replace this
+  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbz3n9BkuBmofRa4uZELv2MbWGY0aUXqXecT8C-7H7rAnf3WGd_oYj10UBwo19n02K2aiQ/exec"; // Replace this
 
   try {
     const res = await fetch(GOOGLE_WEBHOOK, {
