@@ -1,4 +1,3 @@
-// script.js (complete, replacing previous version)
 let currentStep = 0;
 const steps = document.querySelectorAll(".form-step");
 const progress = document.getElementById("progress");
@@ -7,9 +6,7 @@ const nextBtn = document.getElementById("nextBtn");
 const form = document.getElementById("shippingForm");
 
 function showStep(step) {
-  steps.forEach((s, index) => {
-    s.classList.toggle("active", index === step);
-  });
+  steps.forEach((s, index) => s.classList.toggle("active", index === step));
   progress.style.width = `${(step / (steps.length - 1)) * 100}%`;
   prevBtn.classList.toggle("hidden", step === 0);
   nextBtn.textContent = step === steps.length - 1 ? "Submit" : "Next";
@@ -20,39 +17,17 @@ function validateStep(step) {
   return Array.from(inputs).every(input => input.value.trim() !== "");
 }
 
-// In script.js, replace the nextBtn event listener with this
 nextBtn.addEventListener("click", async () => {
-  if (validateStep(currentStep)) {
-    if (currentStep < steps.length - 1) {
-      currentStep++;
-      showStep(currentStep);
-    } else {
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
-      const jsonData = JSON.stringify(data);
-      const encodedData = btoa(jsonData);
-      console.log("Sending data:", encodedData); // Debug: Check encoded data
-      try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbz3n9BkuBmofRa4uZELv2MbWGY0aUXqXecT8C-7H7rAnf3WGd_oYj10UBwo19n02K2aiQ/exec", {
-          method: "POST",
-          body: encodedData,
-          headers: { "Content-Type": "text/plain" }
-        });
-        const result = await response.text();
-        console.log("Response:", result); // Debug: Check server response
-        alert(result);
-        if (result === "Success") {
-          form.reset();
-          currentStep = 0;
-          showStep(currentStep);
-        }
-      } catch (err) {
-        console.error("Submission error:", err);
-        alert("Failed to submit form: " + err.message);
-      }
-    }
+  if (!validateStep(currentStep)) {
+    alert("Please fill in all required fields on this step.");
+    return;
+  }
+
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    showStep(currentStep);
   } else {
-    alert("Please fill all required fields.");
+    await submitForm();
   }
 });
 
@@ -63,65 +38,76 @@ prevBtn.addEventListener("click", () => {
   }
 });
 
-// Camera Functionality
-let stream = null;
+showStep(currentStep);
 
-async function startCamera() {
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-    const video = document.getElementById("video");
-    video.srcObject = stream;
-    video.style.display = "block";
-  } catch (err) {
-    console.error("Camera error:", err);
-    alert("Failed to access camera.");
-  }
-}
+// Autofill
+form.addEventListener('input', (e) => {
+  localStorage.setItem(e.target.name, e.target.value);
+});
 
-function capturePhoto() {
-  const video = document.getElementById("video");
-  const canvas = document.getElementById("canvas");
-  const photoPreview = document.getElementById("photoPreview");
-  const photoData = document.getElementById("photoData");
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext("2d").drawImage(video, 0, 0);
-  photoPreview.src = canvas.toDataURL("image/png");
-  photoPreview.style.display = "block";
-  photoData.value = photoPreview.src; // Store Base64 image
-  video.style.display = "none";
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-  }
-}
+window.addEventListener('load', () => {
+  const inputs = form.querySelectorAll("input, select, textarea");
+  inputs.forEach(input => {
+    const saved = localStorage.getItem(input.name);
+    if (saved) input.value = saved;
+  });
+});
 
-// Barcode Scanning
+// Barcode Scanner
 function scanBarcode() {
-  const barcodeScanner = document.getElementById("barcodeScanner");
-  barcodeScanner.style.display = "block";
+  document.getElementById("barcodeScanner").style.display = "block";
+
   Quagga.init({
     inputStream: {
       name: "Live",
       type: "LiveStream",
-      target: barcodeScanner,
+      target: document.getElementById("barcodeScanner"),
       constraints: { facingMode: "environment" }
     },
-    decoder: { readers: ["code_128_reader", "ean_reader", "qr_reader"] }
-  }, err => {
+    decoder: {
+      readers: ["code_128_reader", "ean_reader", "qr_reader"]
+    }
+  }, function (err) {
     if (err) {
-      console.error("Quagga error:", err);
-      alert("Failed to initialize barcode scanner.");
+      console.error(err);
+      alert("Failed to start barcode scanner.");
       return;
     }
     Quagga.start();
   });
 
-  Quagga.onDetected(data => {
-    document.getElementById("barcodeData").value = data.codeResult.code;
-    barcodeScanner.style.display = "none";
+  Quagga.onDetected(function (data) {
+    const code = data.codeResult.code;
+    document.getElementById("barcodeData").value = code;
+    alert("Scanned: " + code);
     Quagga.stop();
+    document.getElementById("barcodeScanner").style.display = "none";
   });
 }
 
-// Initialize
-showStep(currentStep);
+// Submit
+async function submitForm() {
+  alert("Submitting form...");
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+  const encodedData = btoa(JSON.stringify(data));
+
+  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbz3n9BkuBmofRa4uZELv2MbWGY0aUXqXecT8C-7H7rAnf3WGd_oYj10UBwo19n02K2aiQ/exec";
+
+  try {
+    const res = await fetch(GOOGLE_WEBHOOK, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: encodedData
+    });
+
+    const result = await res.text();
+    alert("Submitted: " + result);
+    form.reset();
+    localStorage.clear();
+    currentStep = 0;
+    showStep(currentStep);
+  } catch (err) {
+    alert("Error submitting form: " + err.message);
+  }
+}
