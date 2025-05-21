@@ -10,8 +10,9 @@
 
 <div class="form-container">
   <form id="shippingForm">
+    <!-- Step 1: Pickup -->
     <div class="form-step active" data-step="1">
-      <h2>Step 1: Pickup Information</h2>
+      <h2>Step 1: Pickup Info</h2>
       <label>Reference Number <input name="referenceNumber" required></label>
       <label>HAZMAT Status
         <select name="hazmat">
@@ -41,6 +42,7 @@
       <label>2nd Contact <input name="pickupAltContact"></label>
     </div>
 
+    <!-- Step 2: Item -->
     <div class="form-step" data-step="2">
       <h2>Step 2: Item Details</h2>
       <label>Item Count <input type="number" name="itemCount" required></label>
@@ -58,12 +60,21 @@
         </select>
       </label>
       <label>Pickup Instructions <textarea name="pickupInstructions"></textarea></label>
-      <button type="button" onclick="openCamera()">📷 Take Photo</button>
+
+      <!-- Camera & Barcode -->
+      <button type="button" onclick="startCamera()">📷 Start Camera</button>
+      <button type="button" onclick="capturePhoto()">📸 Capture Photo</button>
+      <video id="video" width="100%" autoplay playsinline style="display:none;"></video>
+      <canvas id="canvas" style="display:none;"></canvas>
+      <img id="photoPreview" style="max-width:100%; display:none;" alt="Captured photo" />
+      <input type="hidden" name="photoData" id="photoData">
+
       <button type="button" onclick="scanBarcode()">🔍 Scan QR/Barcode</button>
-      <input type="hidden" name="photoData">
-      <input type="hidden" name="barcodeData">
+      <div id="barcodeScanner" style="width:100%;height:250px;display:none;"></div>
+      <input type="hidden" name="barcodeData" id="barcodeData">
     </div>
 
+    <!-- Step 3: Delivery -->
     <div class="form-step" data-step="3">
       <h2>Step 3: Delivery Info</h2>
       <label>Delivery Address <input name="deliveryAddress" required></label>
@@ -85,12 +96,14 @@
       <label>2nd Contact <input name="deliveryAltContact"></label>
     </div>
 
+    <!-- Step 4: Billing -->
     <div class="form-step" data-step="4">
       <h2>Step 4: Billing</h2>
       <label>Billable To <input name="billTo" required></label>
       <button type="submit">Submit Form</button>
     </div>
 
+    <!-- Step Navigation -->
     <div class="step-controls">
       <button type="button" id="prevStep">⬅ Back</button>
       <button type="button" id="nextStep">Next ➡</button>
@@ -98,6 +111,8 @@
   </form>
 </div>
 
+<!-- External Scripts -->
+<script src="https://unpkg.com/@ericblade/quagga2@1.2.7/dist/quagga.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
