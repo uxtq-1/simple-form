@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Progressive Shipping Form</title>
+  <title>Shipping Form</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -27,29 +27,73 @@
 
     <!-- Step 2 -->
     <div class="form-step">
-      <label>Courier <input name="courier" required /></label>
-      <label>Main Cost Center <input name="mainCostCenter" required /></label>
+      <label>Courier | Trucking Company<input name="courier" required /></label>
+      <label>Your Main Cost Center <input name="mainCostCenter" required /></label>
     </div>
 
     <!-- Step 3 -->
     <div class="form-step">
       <label>Pickup Address <input name="pickupAddress" required /></label>
+      <label>Pickup Contact Name <input name="pickupContact" required /></label>
+      <label>Pickup Phone Number <input name="pickupPhone" required /></label>
+      <label>Pickup Contact Alt Name <input name="pickupAltContact" /></label>
+      <label>Pickup Alt Phone Number <input name="pickupAltPhone" /></label>
       <label>Pickup City <input name="pickupCity" required /></label>
     </div>
 
-    <!-- Step 4 -->
+        <!-- Step 4 -->
+    <div class="form-step">
+      <label>Item Description <input name="itemDescription" required /></label>
+      <label>Weight <input type="number" name="itemWeight" required /></label>
+      <label>Dimensions (Length) <input type="number" name="itemLength" required /></label>
+      <label>Dimensions (Width) <input type="number" name="itemWidth" required /></label>
+      <label>Dimensions (Height) <input type="number" name="itemHeight" required /></label>
+      <label>Item Count <input type="number" name="itemCount" required /></label>
+    </div>
+
+    <!-- Step 5 -->
     <div class="form-step">
       <label>Pickup Date <input type="date" name="pickupDate" required /></label>
       <label>Pickup Time <input type="time" name="pickupTime" required /></label>
     </div>
 
-    <!-- Step 5 -->
+    <!-- Step 6 -->
     <div class="form-step">
       <label>Item Description <input name="itemDescription" required /></label>
+      <label>Weight <input type="number" name="itemWeight" required /></label>
+      <label>Dimensions (Length) <input type="number" name="itemLength" required /></label>
+      <label>Dimensions (Width) <input type="number" name="itemWidth" required /></label>
+      <label>Dimensions (Height) <input type="number" name="itemHeight" required /></label>
       <label>Item Count <input type="number" name="itemCount" required /></label>
     </div>
 
-    <!-- Step 6: Camera -->
+    <!-- Step 6 -->
+    <div class="form-step">
+      <label>Delivery Address <input name="deliveryAddress" required /></label>
+      <label>Delivery Contact Name <input name="deliveryContact" required /></label>
+      <label>Delivery Phone Number <input name="deliveryPhone" required /></label>
+      <label>Delivery Alt Contact <input name="deliveryAltContact" /></label>
+      <label>Delivery Alt Phone <input name="deliveryAltPhone" /></label>
+      <label>Delivery City <input name="deliveryCity" required /></label>
+    </div>
+
+        <!-- Step 7 -->
+    <div class="form-step">
+      <label>Item Description <input name="itemDescription" required /></label>
+      <label>Weight <input type="number" name="itemWeight" required /></label>
+      <label>Dimensions (Length) <input type="number" name="itemLength" required /></label>
+      <label>Dimensions (Width) <input type="number" name="itemWidth" required /></label>
+      <label>Dimensions (Height) <input type="number" name="itemHeight" required /></label>
+      <label>Item Count <input type="number" name="itemCount" required /></label>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="form-step">
+      <label>Delivery Date <input type="date" name="deliveryDate" required /></label>
+      <label>Delivery Time <input type="time" name="deliveryTime" required /></label>
+    </div>
+
+    <!-- Step 9: Camera -->
     <div class="form-step">
       <button type="button" onclick="startCamera()">📷 Start Camera</button>
       <button type="button" onclick="capturePhoto()">📸 Capture Photo</button>
@@ -59,12 +103,12 @@
       <input type="hidden" name="photoData" id="photoData" />
     </div>
 
-    <!-- Step 7: Barcode -->
+    <!-- Step 10: Barcode -->
     <div class="form-step">
       <button type="button" onclick="scanBarcode()">🔍 Scan QR/Barcode</button>
-      <div id="barcodeScanner" style="width:100%;height:250px;display:none;"></div>
+      <div id="barcodeScanner" style="width:100%;height:320px;display:none;"></div>
       <input type="hidden" name="barcodeData" id="barcodeData" />
-      <label>Billable To <input name="billTo" required /></label>
+      <label>Billable To [Cost Center]<input name="billTo" required /></label>
     </div>
 
     <!-- Navigation -->
