@@ -1,28 +1,42 @@
-let currentStep = 1;
+let currentStep = 0;
 const steps = document.querySelectorAll(".form-step");
-const nextBtn = document.getElementById("nextStep");
-const prevBtn = document.getElementById("prevStep");
+const progress = document.getElementById("progress");
+const nextBtn = document.getElementById("nextBtn");
+const prevBtn = document.getElementById("prevBtn");
 
-function showStep(step) {
-  steps.forEach(s => s.classList.remove("active"));
-  document.querySelector(`[data-step="${step}"]`).classList.add("active");
-  prevBtn.style.display = step === 1 ? "none" : "inline-block";
-  nextBtn.style.display = step === steps.length ? "none" : "inline-block";
+function updateFormStep() {
+  steps.forEach((step, index) => {
+    step.classList.toggle("active", index === currentStep);
+  });
+
+  // Update progress bar
+  const stepPercent = ((currentStep + 1) / steps.length) * 100;
+  progress.style.width = `${stepPercent}%`;
+
+  // Update nav buttons
+  prevBtn.classList.toggle("hidden", currentStep === 0);
+  nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
 }
 
 nextBtn.addEventListener("click", () => {
-  if (currentStep < steps.length) currentStep++;
-  showStep(currentStep);
+  if (currentStep < steps.length - 1) {
+    currentStep++;
+    updateFormStep();
+  } else {
+    submitForm();
+  }
 });
 
 prevBtn.addEventListener("click", () => {
-  if (currentStep > 1) currentStep--;
-  showStep(currentStep);
+  if (currentStep > 0) {
+    currentStep--;
+    updateFormStep();
+  }
 });
 
-showStep(currentStep);
+updateFormStep();
 
-// Autofill from localStorage
+// Save to localStorage
 document.getElementById('shippingForm').addEventListener('input', (e) => {
   localStorage.setItem(e.target.name, e.target.value);
 });
@@ -36,7 +50,7 @@ window.addEventListener('load', () => {
   });
 });
 
-// Camera functionality
+// Camera functions
 let stream = null;
 async function startCamera() {
   try {
@@ -69,7 +83,7 @@ function capturePhoto() {
   video.style.display = "none";
 }
 
-// Barcode scanning with QuaggaJS
+// Barcode scanner
 function scanBarcode() {
   document.getElementById("barcodeScanner").style.display = "block";
 
@@ -96,46 +110,21 @@ function scanBarcode() {
   });
 }
 
-// Google Sheets or Microsoft Graph API
-const GOOGLE_WEBHOOK = ""; // e.g. https://script.google.com/macros/s/XXXXX/exec
-const MICROSOFT_GRAPH_URL = ""; // e.g. https://graph.microsoft.com/v1.0/me/drive/items/{item-id}/workbook/worksheets/Sheet1/tables/Table1/rows/add
-const USE_MICROSOFT_GRAPH = false;
+// Submit function
+async function submitForm() {
+  const formData = Object.fromEntries(new FormData(document.getElementById("shippingForm")).entries());
+  const encrypted = btoa(JSON.stringify(formData));
 
-document.getElementById("shippingForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const formData = Object.fromEntries(new FormData(e.target).entries());
-  const encryptedData = btoa(JSON.stringify(formData));
+  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec"; // Replace this
 
-  if (USE_MICROSOFT_GRAPH) {
-    const bearerToken = "YOUR_MS_GRAPH_ACCESS_TOKEN"; // Auth required
-    const payload = {
-      values: [Object.values(formData)]
-    };
-
-    try {
-      const res = await fetch(MICROSOFT_GRAPH_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${bearerToken}`
-        },
-        body: JSON.stringify(payload)
-      });
-      const json = await res.json();
-      alert("Excel Success: " + JSON.stringify(json));
-    } catch (err) {
-      alert("Error sending to Excel: " + err.message);
-    }
-  } else {
-    try {
-      const res = await fetch(GOOGLE_WEBHOOK, {
-        method: "POST",
-        body: encryptedData
-      });
-      const msg = await res.text();
-      alert("Submitted to Google Sheets: " + msg);
-    } catch (err) {
-      alert("Error sending to Google Sheets: " + err.message);
-    }
+  try {
+    const res = await fetch(GOOGLE_WEBHOOK, {
+      method: "POST",
+      body: encrypted
+    });
+    const msg = await res.text();
+    alert("Submitted successfully: " + msg);
+  } catch (err) {
+    alert("Submission failed: " + err.message);
   }
-});
+}
