@@ -9,11 +9,9 @@ function updateFormStep() {
     step.classList.toggle("active", index === currentStep);
   });
 
-  // Update progress bar
   const stepPercent = ((currentStep + 1) / steps.length) * 100;
   progress.style.width = `${stepPercent}%`;
 
-  // Update nav buttons
   prevBtn.classList.toggle("hidden", currentStep === 0);
   nextBtn.textContent = currentStep === steps.length - 1 ? "Submit" : "Next";
 }
@@ -36,7 +34,7 @@ prevBtn.addEventListener("click", () => {
 
 updateFormStep();
 
-// Save to localStorage
+// Autofill
 document.getElementById('shippingForm').addEventListener('input', (e) => {
   localStorage.setItem(e.target.name, e.target.value);
 });
@@ -50,16 +48,16 @@ window.addEventListener('load', () => {
   });
 });
 
-// Camera functions
+// Camera Functions
 let stream = null;
 async function startCamera() {
   try {
-    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
     const video = document.getElementById("video");
     video.srcObject = stream;
     video.style.display = "block";
   } catch (err) {
-    alert("Camera error: " + err.message);
+    alert("Camera access denied or unavailable.");
   }
 }
 
@@ -80,15 +78,17 @@ function capturePhoto() {
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
   }
+
   video.style.display = "none";
 }
 
-// Barcode scanner
+// Barcode Scanner
 function scanBarcode() {
   document.getElementById("barcodeScanner").style.display = "block";
 
   Quagga.init({
     inputStream: {
+      name: "Live",
       type: "LiveStream",
       target: document.getElementById("barcodeScanner"),
       constraints: { facingMode: "environment" }
@@ -96,35 +96,39 @@ function scanBarcode() {
     decoder: {
       readers: ["code_128_reader", "ean_reader", "qr_reader"]
     }
-  }, (err) => {
-    if (err) return console.error(err);
+  }, function (err) {
+    if (err) {
+      console.error(err);
+      alert("Failed to start barcode scanner.");
+      return;
+    }
     Quagga.start();
   });
 
-  Quagga.onDetected((data) => {
+  Quagga.onDetected(function (data) {
     const code = data.codeResult.code;
     document.getElementById("barcodeData").value = code;
-    alert("Barcode: " + code);
+    alert("Scanned: " + code);
     Quagga.stop();
     document.getElementById("barcodeScanner").style.display = "none";
   });
 }
 
-// Submit function
+// Submit Form
 async function submitForm() {
-  const formData = Object.fromEntries(new FormData(document.getElementById("ShippingFormResponses")).entries());
-  const encrypted = btoa(JSON.stringify(formData));
+  const formData = Object.fromEntries(new FormData(document.getElementById("shippingForm")).entries());
+  const encryptedData = btoa(JSON.stringify(formData));
 
-  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbx3KZurx8EIYSaZuTsQOQTwnhvVl6ITJeNzc2cXgCj4/dev"; // Replace this
+  const GOOGLE_WEBHOOK = "https://script.google.com/macros/s/AKfycbwaVxT8ZQtar1H-Ob-QEeBSsSfUQGPUG3fbrH-5K7oVNzawHGOre-XNc9ihyezCbClegg/exec"; // Replace this
 
   try {
     const res = await fetch(GOOGLE_WEBHOOK, {
       method: "POST",
-      body: encrypted
+      body: encryptedData
     });
     const msg = await res.text();
-    alert("Submitted successfully: " + msg);
+    alert("Submitted: " + msg);
   } catch (err) {
-    alert("Submission failed: " + err.message);
+    alert("Error submitting form: " + err.message);
   }
 }
