@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shipping Form</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="form-container">
+  <form id="shippingForm">
+    <div class="form-step active" data-step="1">
+      <h2>Step 1: Pickup Information</h2>
+      <label>Reference Number <input name="referenceNumber" required></label>
+      <label>HAZMAT Status
+        <select name="hazmat">
+          <option value="non-hazmat">Non-HAZMAT</option>
+          <option value="hazmat">HAZMAT</option>
+        </select>
+      </label>
+      <label>Courier <input name="courier" required></label>
+      <label>Main Cost Center <input name="mainCostCenter" required></label>
+      <label>Local Cost Center <input name="localCostCenter"></label>
+      <label>Pickup Address <input name="pickupAddress" required></label>
+      <label>Zip Code <input name="pickupZip" required></label>
+      <label>City/Town <input name="pickupCity" required></label>
+      <label>State <input name="pickupState" required></label>
+      <label>Pickup Location
+        <select name="pickupLocation">
+          <option>Warehouse Dock</option>
+          <option>Reception</option>
+          <option>Floor</option>
+          <option>Mezzanine</option>
+        </select>
+      </label>
+      <label>Pickup Date <input type="date" name="pickupDate" required></label>
+      <label>Pickup Time <input type="time" name="pickupTime" required></label>
+      <label>Contact Person <input name="pickupContact" required></label>
+      <label>Contact Number <input name="pickupPhone" required></label>
+      <label>2nd Contact <input name="pickupAltContact"></label>
+    </div>
+
+    <div class="form-step" data-step="2">
+      <h2>Step 2: Item Details</h2>
+      <label>Item Count <input type="number" name="itemCount" required></label>
+      <label>Description <input name="itemDescription" required></label>
+      <label>Weight (kg) <input type="number" name="weight" required></label>
+      <label>Dimensions (LxWxH) <input name="dimensions" required></label>
+      <label>Item Type
+        <select name="itemType">
+          <option>Cardboard Box</option>
+          <option>Skid/Pallet</option>
+          <option>Crate</option>
+          <option>Tote</option>
+          <option>Envelope</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <label>Pickup Instructions <textarea name="pickupInstructions"></textarea></label>
+      <button type="button" onclick="openCamera()">📷 Take Photo</button>
+      <button type="button" onclick="scanBarcode()">🔍 Scan QR/Barcode</button>
+      <input type="hidden" name="photoData">
+      <input type="hidden" name="barcodeData">
+    </div>
+
+    <div class="form-step" data-step="3">
+      <h2>Step 3: Delivery Info</h2>
+      <label>Delivery Address <input name="deliveryAddress" required></label>
+      <label>Zip Code <input name="deliveryZip" required></label>
+      <label>City/Town <input name="deliveryCity" required></label>
+      <label>State <input name="deliveryState" required></label>
+      <label>Delivery Location
+        <select name="deliveryLocation">
+          <option>Warehouse Dock</option>
+          <option>Reception</option>
+          <option>Floor</option>
+          <option>Mezzanine</option>
+        </select>
+      </label>
+      <label>Delivery Date <input type="date" name="deliveryDate" required></label>
+      <label>Delivery Time <input type="time" name="deliveryTime" required></label>
+      <label>Delivery Contact <input name="deliveryContact" required></label>
+      <label>Contact Number <input name="deliveryPhone" required></label>
+      <label>2nd Contact <input name="deliveryAltContact"></label>
+    </div>
+
+    <div class="form-step" data-step="4">
+      <h2>Step 4: Billing</h2>
+      <label>Billable To <input name="billTo" required></label>
+      <button type="submit">Submit Form</button>
+    </div>
+
+    <div class="step-controls">
+      <button type="button" id="prevStep">⬅ Back</button>
+      <button type="button" id="nextStep">Next ➡</button>
+    </div>
+  </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
